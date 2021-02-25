@@ -384,9 +384,34 @@ int test_b(int a, int b=20, int c=30)
 
 #### 3.2 函数占位参数
 
-递增运算符重载会用到占位函数
+递增运算符重载会用到占位函数（后面章节）
 
-https://www.bilibili.com/video/BV1et411b73Z?p=96&spm_id_from=pageDriver
+
+
+**语法**：`返回值类型 函数名(数据类型 ){}`
+
+- 函数占位参数需要传参， 见 `func_1(...)` 
+
+- 占位参数 可以有默认参数, 见 `func_2(...)`
+
+```c++
+void func_1(int a, int)
+{
+    //......    
+}
+void func_2(int a, int  = 10)
+{
+    //......
+}
+int main()
+{
+    func_1(10, 20);
+    func_2(10);
+    func_2(10, 20);
+    
+    return 0;
+}
+```
 
 
 
@@ -396,7 +421,78 @@ https://www.bilibili.com/video/BV1et411b73Z?p=96&spm_id_from=pageDriver
 
 ##### 3.3.1 函数重载概述
 
+**作用**：函数名可以相同，提高复用性。
+
+**函数重载的条件**：
+
+- 同一个作用域下
+- 函数名称相同
+- 函数参数 **类型不同** 或 **个数不同** 或 **顺序不同**
+
+
+
+**示例**：
+
+```c++
+void func(int a, int b)  //1
+{
+    cout << "int a, int b " << a << endl;
+}
+void func(int a, double b)  //2
+{
+    a = a + b;
+    cout << "int a, double b " << a << endl;
+}
+void func(double a, int b)  //3
+{
+    a = a + b;
+    cout << "double a, int b " << a << endl;
+}
+
+int main()
+{
+    func(10, 20);    //调用1 - output [int a, int b 10]
+    func(10, 20.1);  //调用2 - output [int a, double b 30]
+    func(20.1, 30);  //调用3 - output [double a, int b 50.1]
+
+    return 0;
+}
+    
+```
+
+
+
+
+
 ##### 3.3.2 函数重载注意事项
+
+- 引用作为函数重载条件
+- 函数使用重载时，尽量避免使用默认参数，防止出现二义性报错
+
+
+
+```cpp
+#include <iostream>
+using namespace std;
+
+//函数重载的注意事项 - 引用作为重载的条件
+void func(int& a)    //此时如果传入一个常量10，即int &a = 10，不合法。
+{
+    cout << "func(int& a) " << a << endl;
+}
+void func(const int& a)
+{
+    cout << "func(const int& a) " << a << endl;
+}
+int main()
+{
+    int a = 10;
+    func(a);   //传入 变量 调用 无const 的
+    func(10);  //传入 常量 调用 有const 的
+
+    return 0;
+}
+```
 
 
 
@@ -405,6 +501,77 @@ https://www.bilibili.com/video/BV1et411b73Z?p=96&spm_id_from=pageDriver
 
 
 ### 4. 类和对象
+
+C++ 面向对象的**三大特性**：==**封装**==、==**继承**==、==**多态**==
+
+C++ 认为 ==**万事万物皆为对象**==，对象上有其属性和行为
+
+
+
+**例如**：
+
+​    人可以作为对象，属性有姓名、年龄、身高、体重......, 行为有走、跑、跳、吃饭......
+
+​    车也可以作为对象，属性有轮胎、方向盘、车灯......，行为有载人、放音乐......
+
+​    ==具有相同性质的对象，我们可以抽象为类==，人属于人类，车属于车类。
+
+
+
+#### 4.1 封装
+
+##### 4.4.1 封装的意义
+
+封装是C++面向对象三大特性之一
+
+封装的意义：
+
+- 将属性和行为作为一个整体，表现生活中的事物
+- 将属性和行为加以权限控制
+
+
+
+**封装意义一**：
+
+在设计类的时候，将属性和行为写在一起，表现事物。
+
+**语法**： `class 类名{ 访问权限：属性 / 行为 }`
+
+
+
+https://www.bilibili.com/video/BV1et411b73Z?p=99&spm_id_from=pageDriver
+
+
+
+
+
+
+
+
+
+##### 4.1.2 struct 和 class 区别
+
+##### 4.1.3 成员属性设置为私有
+
+
+
+#### 4.2 对象的初始化和清理
+
+#### 4.3 C++ 对象模型 和 this指针
+
+#### 4.4 友元
+
+#### 4.5 运算符重载
+
+#### 4.6 继承
+
+#### 4.7 多态
+
+
+
+### 5. 文件操作
+
+
 
 
 
