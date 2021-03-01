@@ -508,6 +508,22 @@ C++ 认为 ==**万事万物皆为对象**==，对象上有其属性和行为
 
 
 
+- **实例化**是指通过一个类，创建一个对象的过程。
+
+- 类的成员一般加 "m_" 前缀(member)，可以清晰的表示它是一个类的成员。
+
+- 类中的[属性]和[行为]，统一称为 **成员**；
+
+  [属性] 称为 **成员属性** 或 **成员变量**
+
+  [行为] 称为 **成员函数** 或 **成员方法**
+
+- 
+
+
+
+
+
 **例如**：
 
 ​    人可以作为对象，属性有姓名、年龄、身高、体重......, 行为有走、跑、跳、吃饭......
@@ -526,36 +542,204 @@ C++ 认为 ==**万事万物皆为对象**==，对象上有其属性和行为
 
 封装的意义：
 
-- 将属性和行为作为一个整体，表现生活中的事物
+- 将**属性**和**行为**作为一个整体，表现生活中的事物
 - 将属性和行为加以权限控制
 
 
 
-**封装意义一**：
+###### **封装意义一**：
 
-在设计类的时候，将属性和行为写在一起，表现事物。
+在设计类的时候，将==属性==和==行为==写在一起，表现事物。
 
-**语法**： `class 类名{ 访问权限：属性 / 行为 }`
-
-
-
-https://www.bilibili.com/video/BV1et411b73Z?p=99&spm_id_from=pageDriver
+**语法**： `class 类名{ 访问权限：属性 / 行为 };`
 
 
 
+**示例1**：设计一个圆类，求圆的周长
+
+**示例代码**：
+
+``` c++
+#include <iostream>
+using namespace std;
+const double PI = 3.14;
+class Circle
+{
+    //访问权限： 公共权限
+public:
+    //属性： 半径
+    int m_r;
+    //行为： 获取圆的周长
+    double claculateZC() {
+        return 2 * PI * m_r;
+    }
+};
+int main()
+{
+    //通过圆类 创建具体的圆（对象）
+    Circle c1;  //实例化
+    c1.m_r = 10;
+    cout << "周长: " << c1.claculateZC() << endl;
+
+    return 0;
+}
+```
 
 
 
+**示例**：设计一个学生类，属性有姓名和学号，可以给姓名和学号赋值，可以显示学生的姓名和学号。
+
+**示例代码**：
+
+``` c++
+#include <iostream>
+using namespace std;
+
+class Student
+{
+public:  //公共权限
+    //属性
+    string m_Name;  //姓名
+    int m_Id;       //学号
+
+public:  //公共权限
+    //行为
+    void showStudent() {  //显示姓名和学号
+        cout << "姓名: " << m_Name << "学号: " << m_Id << endl;
+    }
+    void setName(string name) {  //set name
+        m_Name = name;
+    }
+    void setID(int id) {     //set ID
+        m_Id = id;
+    }
+};
+int main()
+{
+    Student s1;  //实例化
+    
+    s1.setName("张三");
+    s1.setID(123);
+
+    s1.showStudent();
+
+    return 0;
+}
+```
+
+
+
+###### **封装意义二**：
+
+类在设计时，可以把属性和行为放在不同的权限下，加以控制。
+
+三种访问权限：
+
+- public         公共权限
+
+  类内成员类内**可以**访问，类外也**可以**访问。
+
+- protected  保护权限
+
+  类内成员类内**可以**访问，类外也**不可以**访问；儿子**可以**访问。
+
+- private       私有权限
+
+  类内成员类内**可以**访问，类外也**不可以**访问；儿子**不可以**访问。
 
 
 
 ##### 4.1.2 struct 和 class 区别
 
+C++中，struct和class唯一**区别** 是 **默认的访问权限不同:
+
+- struct  默认权限为公共
+- class    默认权限为私有
+
+
+
 ##### 4.1.3 成员属性设置为私有
+
+**优点**：
+
+- 将所有成员属性设置为私有，可以自己**控制读写权限**。
+- 对于写权限，可以**检测数据的有效性**（写入前 增加限定条件 进行判定）。
+
+
+
+**示例**：
+
+```c++
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Person
+{
+public:
+    //设置 m_Age   可读可写  并限制写入年龄在 [0~150] 之间
+    void setAge(int age)
+    {
+        if (age < 0 || age > 150)
+        {
+            cout << "输入有误" << endl;
+            return;
+        }
+        m_Age = age;
+    }
+    int getAge()
+    {
+        return m_Age;
+    }
+
+    //设置 m_Name 只读
+    string getName()
+    {
+        m_Name = "我是名字";
+        return m_Name;
+    }
+
+    //设置 m_Addr 只写
+    void getAddr(string addr)
+    {
+        m_Addr = addr;
+    }
+
+private:
+    int m_Age;      //可读可写 并限制写入年龄在 (0~100] 之间
+    string m_Name;  //只读
+    string m_Addr;  //只写
+};
+
+
+int main()
+{
+    Person p1;
+
+    p1.setAge(999); //超出限制范围([0,150])，设置失败，输出错误提示
+
+    p1.getAddr("我是地址");
+    p1.setAge(9);
+    cout << "name " << p1.getName() << endl;
+    cout << "age  " << p1.getAge() << endl;
+
+    return 0;
+}
+```
+
+
+
+**例** 设计立方体
+
+https://www.bilibili.com/video/BV1et411b73Z?p=104&spm_id_from=pageDriver
+
+
 
 
 
 #### 4.2 对象的初始化和清理
+
+
 
 #### 4.3 C++ 对象模型 和 this指针
 
