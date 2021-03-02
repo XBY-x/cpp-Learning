@@ -555,35 +555,54 @@ C++ 认为 ==**万事万物皆为对象**==，对象上有其属性和行为
 
 
 
-**示例1**：设计一个圆类，求圆的周长
+
+
+**示例1**：设计一个圆类，求圆的周长 (==**分 .c 和 .h 的写法**==)
 
 **示例代码**：
 
-``` c++
-#include <iostream>
-using namespace std;
-const double PI = 3.14;
-class Circle
-{
-    //访问权限： 公共权限
-public:
-    //属性： 半径
-    int m_r;
-    //行为： 获取圆的周长
-    double claculateZC() {
-        return 2 * PI * m_r;
-    }
-};
-int main()
-{
-    //通过圆类 创建具体的圆（对象）
-    Circle c1;  //实例化
-    c1.m_r = 10;
-    cout << "周长: " << c1.claculateZC() << endl;
+- main.cpp
 
-    return 0;
-}
-```
+  ``` c++
+  #include <iostream>
+  using namespace std;
+  const double PI = 3.14;
+  #include "class.h"
+  
+  double Circle::claculateZC()
+  {
+      return 2 * PI * m_r;
+  }
+  
+  int main()
+  {
+      //通过圆类 创建具体的圆（对象）
+      Circle c1;  //实例化
+      c1.m_r = 10;
+      cout << "周长: " << c1.claculateZC() << endl;
+  
+      return 0;
+  }
+  ```
+
+  
+
+- cir_class.h
+
+  ``` c++
+  #pragma once    //防止多个头文件包含时重复 类似 #ifdef
+  class Circle
+  {
+      //访问权限： 公共权限
+  public:
+      //属性： 半径
+      int m_r;
+      //行为： 获取圆的周长
+      double claculateZC();
+  };
+  ```
+
+  
 
 
 
@@ -729,15 +748,45 @@ int main()
 
 
 
-**例** 设计立方体
-
-https://www.bilibili.com/video/BV1et411b73Z?p=104&spm_id_from=pageDriver
-
-
-
-
-
 #### 4.2 对象的初始化和清理
+
+##### 4.2.1 构造函数 和 析构函数
+
+https://www.bilibili.com/video/BV1et411b73Z?p=106&spm_id_from=pageDriver
+
+##### 4.2.2 构造函数的分类及调用
+
+
+
+##### 4.2.3 拷贝构造函数调用时机
+
+
+
+##### 4.2.4 构造函数调用规则
+
+
+
+##### 4.2.5 深拷贝与浅拷贝
+
+
+
+##### 4.2.6 初始化列表
+
+
+
+##### 4.2.7 类对象作为类成员
+
+
+
+##### 4.2.8 静态成员
+
+
+
+
+
+
+
+
 
 
 
